@@ -1,0 +1,41 @@
+services:
+  backend:
+    container_name: 'spring_api_tarefas'
+    build: backend
+    ports:
+      - 8080:8080
+    environment:
+      - POSTGRES_DB=db_tarefas
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    networks:
+      - spring-postgres
+    depends_on:
+      - db
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/target:/app/target
+      - ./backend/mvnw:/app/mvnw
+      - ./backend/pom.xml:/app/pom.xml
+
+  db:
+    image: postgres:16
+    container_name: 'postgres_api_tarefas'
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-postgres
+    environment:
+      - POSTGRES_DB=db_tarefas
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    ports:
+      - '5432:5432'
+
+volumes:
+  db-data:
+
+networks:
+  spring-postgres:
+
