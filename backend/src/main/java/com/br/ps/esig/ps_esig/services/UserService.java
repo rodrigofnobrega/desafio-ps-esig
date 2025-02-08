@@ -17,4 +17,11 @@ public class UserService {
     public void create(UserCreateDTO userCreateDTO) {
         userRepository.save(UserMapper.toUser(userCreateDTO));
     }
+
+    @Transactional(readOnly = true)
+    public UserEntity findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new RuntimeException("Usuário não encontrado com id=" + userId)
+        );
+    }
 }
