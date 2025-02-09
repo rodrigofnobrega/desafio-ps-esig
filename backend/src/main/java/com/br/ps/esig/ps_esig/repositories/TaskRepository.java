@@ -2,6 +2,7 @@ package com.br.ps.esig.ps_esig.repositories;
 
 import com.br.ps.esig.ps_esig.entities.TaskEntity;
 import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
+import com.br.ps.esig.ps_esig.repositories.projection.TaskProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,7 +20,7 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
             "     LOWER(t.description) LIKE LOWER(CONCAT('%', CAST(:term AS string), '%'))) " +
             "AND (:userId IS NULL OR t.user.id = :userId) " +
             "AND (:situation IS NULL OR t.taskSituation = :situation)")
-    Page<TaskEntity> findTasksByFilters(
+    Page<TaskProjection> findTasksByFilters(
             @Param("id") Long id,
             @Param("term") String term,
             @Param("userId") Long responsible,

@@ -5,6 +5,7 @@ import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskUpdateDTO;
 import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
+import com.br.ps.esig.ps_esig.repositories.projection.TaskProjection;
 import com.br.ps.esig.ps_esig.services.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,14 @@ public class TaskController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Page<TaskResponseDTO>> searchTasks(
+    public ResponseEntity<Page<TaskProjection>> searchTasks(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String term,
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) TaskSituationEnum situation,
             Pageable pageable
     ) {
-        Page<TaskResponseDTO> tasks = TaskMapper.toPageResponseDTO(
-                taskService.searchTasks(id, term, userId, situation, pageable));
+        Page<TaskProjection> tasks =   taskService.searchTasks(id, term, userId, situation, pageable);
 
         return ResponseEntity.ok(tasks);
     }

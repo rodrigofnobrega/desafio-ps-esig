@@ -40,7 +40,7 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public Page<TaskEntity> searchTasks(Long id, String term, Long userId,
+    public Page<TaskProjection> searchTasks(Long id, String term, Long userId,
                                             TaskSituationEnum situation, Pageable pageable) {
         return taskRepository.findTasksByFilters(id, term, userId, situation, pageable);
     }
