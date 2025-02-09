@@ -3,6 +3,7 @@ package com.br.ps.esig.ps_esig.controllers;
 import com.br.ps.esig.ps_esig.dto.mapper.TaskMapper;
 import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
+import com.br.ps.esig.ps_esig.dto.task.TaskUpdateDTO;
 import com.br.ps.esig.ps_esig.entities.TaskEntity;
 import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
 import com.br.ps.esig.ps_esig.services.TaskService;
@@ -37,5 +38,13 @@ public class TaskController {
         List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.searchTasks(id, term, userId, situation));
 
         return ResponseEntity.ok(tasks);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable Long id,
+                                                      @RequestBody @Valid TaskUpdateDTO taskUpdateDTO) {
+
+        TaskResponseDTO updatedTask = taskService.updateTask(id, taskUpdateDTO);
+        return ResponseEntity.ok(updatedTask);
     }
 }
