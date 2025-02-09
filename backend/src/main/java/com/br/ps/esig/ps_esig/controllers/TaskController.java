@@ -31,6 +31,13 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(task);
     }
 
+    @GetMapping
+    public ResponseEntity<List<TaskResponseDTO>> findAll(Long id) {
+        List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.findAll());
+
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
+    }
+
     @GetMapping("/user/{id}")
     public ResponseEntity<List<TaskResponseDTO>> findByUser(@PathVariable(value = "id") Long id) {
         List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.findByUser(id));
