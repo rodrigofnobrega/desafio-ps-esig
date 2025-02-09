@@ -12,9 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tarefas")
@@ -23,6 +22,7 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> create(@RequestBody @Valid TaskCreateDTO taskCreateDTO) {
         taskService.create(taskCreateDTO);
 
@@ -30,6 +30,7 @@ public class TaskController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Page<TaskResponseDTO>> searchTasks(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String term,
@@ -44,6 +45,7 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable Long id,
                                                       @RequestBody @Valid TaskUpdateDTO taskUpdateDTO) {
 
@@ -52,6 +54,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
