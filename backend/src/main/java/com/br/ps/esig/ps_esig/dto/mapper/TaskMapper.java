@@ -2,12 +2,11 @@ package com.br.ps.esig.ps_esig.dto.mapper;
 
 import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
-import com.br.ps.esig.ps_esig.dto.user.UserCreateDTO;
-import com.br.ps.esig.ps_esig.dto.user.UserResponseDTO;
 import com.br.ps.esig.ps_esig.entities.TaskEntity;
-import com.br.ps.esig.ps_esig.entities.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,11 +32,11 @@ public class TaskMapper {
         return modelMapper.map(taskCreateDTO, TaskEntity.class);
     }
 
-    public static List<TaskResponseDTO> toListResponseDTO(List<TaskEntity> data) {
+    public static Page<TaskResponseDTO> toPageResponseDTO(Page<TaskEntity> data) {
         List<TaskResponseDTO> dtos = data.stream()
                 .map(TaskMapper::toResponseDTO)
                 .collect(Collectors.toList());
 
-        return dtos;
+        return new PageImpl<>(dtos, data.getPageable(), data.getTotalElements());
     }
 }

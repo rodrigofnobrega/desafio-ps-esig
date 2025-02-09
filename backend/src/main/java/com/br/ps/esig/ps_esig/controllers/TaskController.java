@@ -4,11 +4,12 @@ import com.br.ps.esig.ps_esig.dto.mapper.TaskMapper;
 import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskUpdateDTO;
-import com.br.ps.esig.ps_esig.entities.TaskEntity;
 import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
 import com.br.ps.esig.ps_esig.services.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,13 +30,15 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskResponseDTO>> searchTasks(
+    public ResponseEntity<Page<TaskResponseDTO>> searchTasks(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String term,
             @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) TaskSituationEnum situation
+            @RequestParam(required = false) TaskSituationEnum situation,
+            Pageable pageable
     ) {
-        List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.searchTasks(id, term, userId, situation));
+        Page<TaskResponseDTO> tasks = TaskMapper.toPageResponseDTO(
+                taskService.searchTasks(id, term, userId, situation, pageable));
 
         return ResponseEntity.ok(tasks);
     }

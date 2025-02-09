@@ -8,12 +8,13 @@ import com.br.ps.esig.ps_esig.entities.TaskEntity;
 import com.br.ps.esig.ps_esig.entities.UserEntity;
 import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
 import com.br.ps.esig.ps_esig.repositories.TaskRepository;
-import jakarta.validation.Valid;
+import com.br.ps.esig.ps_esig.repositories.projection.TaskProjection;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 public class TaskService {
@@ -39,8 +40,9 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskEntity> searchTasks(Long id, String term, Long userId, TaskSituationEnum situation) {
-        return taskRepository.findTasksByFilters(id, term, userId, situation);
+    public Page<TaskEntity> searchTasks(Long id, String term, Long userId,
+                                            TaskSituationEnum situation, Pageable pageable) {
+        return taskRepository.findTasksByFilters(id, term, userId, situation, pageable);
     }
 
     @Transactional
