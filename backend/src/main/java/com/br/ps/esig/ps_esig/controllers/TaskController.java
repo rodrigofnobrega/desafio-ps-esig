@@ -1,15 +1,15 @@
 package com.br.ps.esig.ps_esig.controllers;
 
+import com.br.ps.esig.ps_esig.dto.mapper.TaskMapper;
 import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
+import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
+import com.br.ps.esig.ps_esig.entities.TaskEntity;
 import com.br.ps.esig.ps_esig.services.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/tarefas")
@@ -22,5 +22,11 @@ public class TaskController {
         taskService.create(taskCreateDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponseDTO> findById(@PathVariable(value = "id") Long id) {
+        TaskResponseDTO task = TaskMapper.toResponseDTO(taskService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(task);
     }
 }

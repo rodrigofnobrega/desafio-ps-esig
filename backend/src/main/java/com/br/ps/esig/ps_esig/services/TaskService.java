@@ -2,6 +2,7 @@ package com.br.ps.esig.ps_esig.services;
 
 import com.br.ps.esig.ps_esig.dto.mapper.TaskMapper;
 import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
+import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
 import com.br.ps.esig.ps_esig.entities.TaskEntity;
 import com.br.ps.esig.ps_esig.entities.UserEntity;
 import com.br.ps.esig.ps_esig.repositories.TaskRepository;
@@ -24,5 +25,12 @@ public class TaskService {
         task.setUser(user);
 
         taskRepository.save(task);
+    }
+
+    @Transactional(readOnly = true)
+    public TaskEntity findById(Long taskId) {
+        return taskRepository.findById(taskId).orElseThrow(
+                () -> new RuntimeException("Tarefa não encontrada com id=" + taskId)
+        );
     }
 }
