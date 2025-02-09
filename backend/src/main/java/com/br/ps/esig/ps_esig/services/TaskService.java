@@ -33,7 +33,7 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public TaskEntity findByid(Long  id) {
+    public TaskEntity findByid(Long id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tarefa não encontrada com ID: " + id));
     }
@@ -69,5 +69,10 @@ public class TaskService {
         TaskEntity updatedTask = taskRepository.save(task);
 
         return TaskMapper.toResponseDTO(updatedTask);
+    }
+
+    public void deleteTask(Long id) {
+        this.findByid(id); // Verificar se a tarefa existe
+        taskRepository.deleteById(id);
     }
 }

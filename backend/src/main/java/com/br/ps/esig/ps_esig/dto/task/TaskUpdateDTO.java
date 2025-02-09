@@ -24,7 +24,7 @@ public class TaskUpdateDTO {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
-    
+
     @Positive(message = "Valores iguais ou menores que zero não são aceitos")
     private Long userId;
 
