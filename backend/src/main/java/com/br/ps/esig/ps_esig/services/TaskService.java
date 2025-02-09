@@ -5,6 +5,7 @@ import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
 import com.br.ps.esig.ps_esig.entities.TaskEntity;
 import com.br.ps.esig.ps_esig.entities.UserEntity;
+import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
 import com.br.ps.esig.ps_esig.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,10 @@ public class TaskService {
     @Transactional(readOnly = true)
     public List<TaskEntity> findAll() {
         return taskRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TaskEntity> findByTaskSituation(TaskSituationEnum situation) {
+        return taskRepository.findTaskByTaskSituation(situation);
     }
 }

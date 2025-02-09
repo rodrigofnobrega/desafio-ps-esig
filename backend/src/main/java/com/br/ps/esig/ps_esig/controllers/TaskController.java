@@ -3,6 +3,7 @@ package com.br.ps.esig.ps_esig.controllers;
 import com.br.ps.esig.ps_esig.dto.mapper.TaskMapper;
 import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
+import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
 import com.br.ps.esig.ps_esig.services.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,14 @@ public class TaskController {
     @GetMapping("/user/{id}")
     public ResponseEntity<List<TaskResponseDTO>> findByUser(@PathVariable(value = "id") Long id) {
         List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.findByUser(id));
+
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
+    }
+
+    @GetMapping("/situation/{situation}")
+    public ResponseEntity<List<TaskResponseDTO>> findByTaskSituation(
+            @PathVariable(value = "situation") TaskSituationEnum situation) {
+        List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.findByTaskSituation(situation));
 
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
