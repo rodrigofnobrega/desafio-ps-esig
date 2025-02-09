@@ -13,8 +13,9 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     @Query("SELECT t FROM TaskEntity t " +
             "WHERE (:id IS NULL OR t.id = :id) " +
-            "AND (:term IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :term, '%')) " +
-            "OR LOWER(t.description) LIKE LOWER(CONCAT('%', :term, '%'))) " +
+            "AND (:term IS NULL OR " +
+            "     LOWER(t.title) LIKE LOWER(CONCAT('%', CAST(:term AS string), '%')) OR " +
+            "     LOWER(t.description) LIKE LOWER(CONCAT('%', CAST(:term AS string), '%'))) " +
             "AND (:userId IS NULL OR t.user.id = :userId) " +
             "AND (:situation IS NULL OR t.taskSituation = :situation)")
     List<TaskEntity> findTasksByFilters(

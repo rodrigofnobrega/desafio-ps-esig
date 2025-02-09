@@ -27,7 +27,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity<List<TaskResponseDTO>> searchTasks(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String term,
