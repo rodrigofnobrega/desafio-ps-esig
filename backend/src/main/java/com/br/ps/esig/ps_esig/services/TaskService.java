@@ -30,25 +30,7 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    @Transactional(readOnly = true)
-    public TaskEntity findById(Long taskId) {
-        return taskRepository.findById(taskId).orElseThrow(
-                () -> new RuntimeException("Tarefa não encontrada com id=" + taskId)
-        );
-    }
-
-    @Transactional(readOnly = true)
-    public List<TaskEntity> findByUser(Long userId) {
-        return taskRepository.findTaskByUserId(userId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<TaskEntity> findAll() {
-        return taskRepository.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public List<TaskEntity> findByTaskSituation(TaskSituationEnum situation) {
-        return taskRepository.findTaskByTaskSituation(situation);
+    public List<TaskEntity> searchTasks(Long id, String term, Long userId, TaskSituationEnum situation) {
+        return taskRepository.findTasksByFilters(id, term, userId, situation);
     }
 }

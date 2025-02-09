@@ -3,6 +3,7 @@ package com.br.ps.esig.ps_esig.controllers;
 import com.br.ps.esig.ps_esig.dto.mapper.TaskMapper;
 import com.br.ps.esig.ps_esig.dto.task.TaskCreateDTO;
 import com.br.ps.esig.ps_esig.dto.task.TaskResponseDTO;
+import com.br.ps.esig.ps_esig.entities.TaskEntity;
 import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
 import com.br.ps.esig.ps_esig.services.TaskService;
 import jakarta.validation.Valid;
@@ -26,31 +27,15 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> findById(@PathVariable(value = "id") Long id) {
-        TaskResponseDTO task = TaskMapper.toResponseDTO(taskService.findById(id));
-        return ResponseEntity.status(HttpStatus.OK).body(task);
-    }
+    @GetMapping("/search")
+    public ResponseEntity<List<TaskResponseDTO>> searchTasks(
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) String term,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) TaskSituationEnum situation
+    ) {
+        List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.searchTasks(id, term, userId, situation));
 
-    @GetMapping
-    public ResponseEntity<List<TaskResponseDTO>> findAll(Long id) {
-        List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.findAll());
-
-        return ResponseEntity.status(HttpStatus.OK).body(tasks);
-    }
-
-    @GetMapping("/user/{id}")
-    public ResponseEntity<List<TaskResponseDTO>> findByUser(@PathVariable(value = "id") Long id) {
-        List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.findByUser(id));
-
-        return ResponseEntity.status(HttpStatus.OK).body(tasks);
-    }
-
-    @GetMapping("/situation/{situation}")
-    public ResponseEntity<List<TaskResponseDTO>> findByTaskSituation(
-            @PathVariable(value = "situation") TaskSituationEnum situation) {
-        List<TaskResponseDTO> tasks = TaskMapper.toListResponseDTO(taskService.findByTaskSituation(situation));
-
-        return ResponseEntity.status(HttpStatus.OK).body(tasks);
+        return ResponseEntity.ok(tasks);
     }
 }
