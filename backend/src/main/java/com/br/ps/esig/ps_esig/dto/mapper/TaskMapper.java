@@ -9,6 +9,9 @@ import com.br.ps.esig.ps_esig.entities.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TaskMapper {
     public static TaskResponseDTO toResponseDTO(TaskEntity taskEntity) {
         ModelMapper modelMapper = new ModelMapper();
@@ -28,5 +31,13 @@ public class TaskMapper {
         modelMapper.addMappings(propertyMap);
 
         return modelMapper.map(taskCreateDTO, TaskEntity.class);
+    }
+
+    public static List<TaskResponseDTO> toListResponseDTO(List<TaskEntity> data) {
+        List<TaskResponseDTO> dtos = data.stream()
+                .map(TaskMapper::toResponseDTO)
+                .collect(Collectors.toList());
+
+        return dtos;
     }
 }

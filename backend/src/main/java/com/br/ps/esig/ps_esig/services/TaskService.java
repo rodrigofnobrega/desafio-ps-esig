@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TaskService {
     @Autowired
@@ -32,5 +34,10 @@ public class TaskService {
         return taskRepository.findById(taskId).orElseThrow(
                 () -> new RuntimeException("Tarefa não encontrada com id=" + taskId)
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<TaskEntity> findByUser(Long userId) {
+        return taskRepository.findTaskByUserId(userId);
     }
 }
