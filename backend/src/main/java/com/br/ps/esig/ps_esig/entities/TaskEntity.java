@@ -1,6 +1,7 @@
 package com.br.ps.esig.ps_esig.entities;
 
 import com.br.ps.esig.ps_esig.enums.PriorityEnum;
+import com.br.ps.esig.ps_esig.enums.TaskSituationEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,10 +32,32 @@ public class TaskEntity {
     @Column(name = "prioridade", nullable = false)
     private PriorityEnum priority;
 
-    @Column(name = "data")
+    @Column(name = "data", nullable = false)
     private LocalDate date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "situacao", nullable = false)
+    private TaskSituationEnum taskSituation;
+
+    @Column(name = "criado_em", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "atualizada_em", nullable = false)
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
+    @PrePersist
+    protected void onCreate() {
+        this.taskSituation = TaskSituationEnum.EM_ANDAMENTO;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
