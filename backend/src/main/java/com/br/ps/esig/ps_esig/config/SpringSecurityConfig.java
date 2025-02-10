@@ -33,7 +33,12 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 antMatcher(HttpMethod.POST, "/api/v1/usuarios"),
-                                antMatcher(HttpMethod.POST, "/api/v1/usuarios/login")
+                                antMatcher(HttpMethod.POST, "/api/v1/usuarios/login"),
+                                antMatcher("/docs-gerenciador-tarefas.html"),
+                                antMatcher("/docs-gerenciador-tarefas/**"),
+                                antMatcher("/swagger-ui.html"),
+                                antMatcher("/swagger-ui/**"),
+                                antMatcher("/webjars/**")
                         ).permitAll()
                         .anyRequest().authenticated()
                 ).sessionManagement(
