@@ -1,6 +1,7 @@
 package com.br.ps.esig.ps_esig.infra.jwt;
 
 import com.br.ps.esig.ps_esig.entities.UserEntity;
+import com.br.ps.esig.ps_esig.exceptions.EntityNotFoundException;
 import com.br.ps.esig.ps_esig.repositories.UserRepository;
 import com.br.ps.esig.ps_esig.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByEmail(username).orElseThrow(
-                () -> new RuntimeException("Usuário não encontrado.")
+                () -> new EntityNotFoundException("Usuário não encontrado.")
         );
 
 
